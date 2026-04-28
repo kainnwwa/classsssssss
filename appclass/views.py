@@ -18,19 +18,20 @@ class MyFormView(View):
                 a = float(num1)
                 b = float(num2)
                 
-                if operation == '+':
-                    result = a + b
-                elif operation == '-':
-                    result = a - b
-                elif operation == '*':
-                    result = a * b
-                elif operation == '/':
-                    if b == 0:
-                        error = 'На ноль делить нельзя!'
-                    else:
-                        result = a / b
-                else:
-                    error = 'Неверное действие'
+                match operation:
+                    case '+':
+                        result = a + b
+                    case '-':
+                        result = a - b
+                    case '*':
+                        result = a * b
+                    case '/':
+                        if b == 0:
+                            error = 'На ноль делить нельзя!'
+                        else:
+                            result = a / b
+                    case _:
+                        error = 'Неверное действие'
                     
             except ValueError:
                 error = 'Введите числа!'
