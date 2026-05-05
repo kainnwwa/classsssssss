@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import BookView
 
 urlpatterns = [
-    path('', views.MyFormView.as_view(), name='home'),
+    path('', BookView.as_view(), name='book_page'),
 ]

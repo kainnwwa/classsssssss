@@ -1,41 +1,28 @@
-from django.shortcuts import render
-from django.views import View
+from django.shortcuts import render, redirect
+from django.views.generic import View
+from .forms import BookForm
+from .models import Book
 
-class MyFormView(View):
+class BookView(View):
     def get(self, request):
-        return render(request, 'main.html')
-    
+        form = BookForm()
+        books = Book.objects.all()
+        return render(request, 'book_page.html', {
+            'form': form,
+            'books': books,
+        })
+
     def post(self, request):
-        num1 = request.POST.get('num1')
-        num2 = request.POST.get('num2')
-        operation = request.POST.get('operation')
-        
-        result = None
-        error = None
-        
-        if num1 and num2 and operation:
-            try:
-                a = float(num1)
-                b = float(num2)
-                
-                match operation:
-                    case '+':
-                        result = a + b
-                    case '-':
-                        result = a - b
-                    case '*':
-                        result = a * b
-                    case '/':
-                        if b == 0:
-                            error = 'На ноль делить нельзя!'
-                        else:
-                            result = a / b
-                    case _:
-                        error = 'Неверное действие'
-                    
-            except ValueError:
-                error = 'Введите числа!'
-        else:
-            error = 'Заполните все поля'
-        
-        return render(request, 'main.html', {'result': result, 'error': error})
+        form = BookForm(request.POST)
+        if form.is_valid():
+            Book.objects.create(
+                title=form.cleaned_data['title'],
+                author=form.cleaned_data['author']
+            )
+            return redirect('book_page')
+        books = Book.objects.all()
+        return render(request, 'book_page.html', {
+            'form': form,
+            'books': books,
+        })
+

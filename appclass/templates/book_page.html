@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Добавить книгу</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button>Сохранить</button>
+        </form>
+    <h2>Список книг</h2>
+    {% for book in books %}
+        <p><b>{{ book.title }}</b> — {{ book.author }}</p>
+    {% empty %}
+        <p>Книг пока нет</p>
+    {% endfor %}
+</body>
+</html>
